@@ -105,14 +105,14 @@ namespace JumpAndRun
                         {
                             headYAvg = jointPoints[JointType.Head].Y;
                         }
-                        Console.WriteLine("Head found");
+                        /*Console.WriteLine("Head found");
                         Console.WriteLine("X: {0}", jointPoints[JointType.Head].X);
                         Console.WriteLine("Y: {0}", jointPoints[JointType.Head].Y);
-                        Console.WriteLine();
+                        Console.WriteLine();*/
 
                         if (jointPoints[JointType.Head].Y < headYAvg - 30)
                         {
-                            Console.WriteLine("Jump detected");
+                            Console.WriteLine("1"); // Jump detected
                         }
                         if (jointPoints[JointType.ShoulderLeft] != null && jointPoints[JointType.ShoulderRight] != null)
                         {
@@ -124,11 +124,11 @@ namespace JumpAndRun
                             }
                             else if (leftS < rightS)
                             {
-                                Console.WriteLine("Leaning right");
+                                Console.WriteLine("2"); // leaning right
                             }
                             else
                             {
-                                Console.WriteLine("Leaning left");
+                                Console.WriteLine("3"); // leaning left
                             }
 
                         }
