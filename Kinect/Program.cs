@@ -112,7 +112,8 @@ namespace JumpAndRun
 
                         if (jointPoints[JointType.Head].Y < headYAvg - 30)
                         {
-                            Console.WriteLine("1"); // Jump detected
+                            System.IO.File.WriteAllText(@"temp.txt", "1");
+                            //Console.WriteLine("1"); // Jump detected
                         }
                         if (jointPoints[JointType.ShoulderLeft] != null && jointPoints[JointType.ShoulderRight] != null)
                         {
@@ -124,11 +125,13 @@ namespace JumpAndRun
                             }
                             else if (leftS < rightS)
                             {
-                                Console.WriteLine("2"); // leaning right
+                                System.IO.File.WriteAllText(@"temp.txt", "2");
+                                //Console.WriteLine("2"); // leaning right
                             }
                             else
                             {
-                                Console.WriteLine("3"); // leaning left
+                                System.IO.File.WriteAllText(@"temp.txt", "3");
+                                //Console.WriteLine("3"); // leaning left
                             }
 
                         }
