@@ -87,6 +87,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private Vector3 m_GroundContactNormal;
         private bool m_Jump, m_PreviouslyGrounded, m_Jumping, m_IsGrounded;
 		public float magnitude = 10.0f;
+        private AndroidJavaObject jo; // for bluetooth socket reads
 
         public Vector3 Velocity
         {
@@ -119,21 +120,53 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private void Start()
         {
             m_RigidBody = GetComponent<Rigidbody>();
-            m_Capsule = GetComponent<CapsuleCollider>();/*
+            m_Capsule = GetComponent<CapsuleCollider>();
+
+            // Android Plugin Calls
+            jo = new AndroidJavaObject("com.you.bluetoothreceive");
+            jo.Call("findBT");
+            jo.Call("openBT");
+            
             mouseLook.Init (transform, cam.transform);
-			Vector3 movement = new Vector3 (450.0f, 0.0f, 450.0f);
-			m_RigidBody.AddForce (movement);*/
+			Vector3 movement = new Vector3 (450.0f, 0.0f, 450.0f); // The initial push forward
+			m_RigidBody.AddForce (movement);
+
+            // End Added Code
         }
 
 
         private void Update()
         {
-            RotateView();
-
+            RotateView(); // Possibly comment this out?
+            /*
             if (CrossPlatformInputManager.GetButtonDown("Jump") && !m_Jump)
             {
                 m_Jump = true;
-            }/*
+            }*/
+
+            // Listens to port
+
+            command = jo.Call<int>("readBT");
+            if (command == 1)
+            {
+                Vector3 jump = new Vector3 (0.0f, 150.0f, 0.0f);
+                m_RigidBody.AddForce(jump);
+            }
+            else if (command == 2) // Turn by 90 degrees, maintain velocity. This looks jarring in FP mode
+            {
+                m_RigidBody.velocity = Quaternion.AngleAxis(90.0f, Vector3.up) * m_RigidBody.velocity;
+                m_RigidBody.velocity = new Vector3(((m_RigidBody.velocity.x)/(m_RigidBody.velocity.magnitude)) * magnitude, ((m_RigidBody.velocity.y) / (m_RigidBody.velocity.magnitude)) * magnitude, ((m_RigidBody.velocity.z) / (m_RigidBody.velocity.magnitude)) * magnitude);
+            }
+            else if (command == 3)
+            {
+                m_RigidBody.velocity = Quaternion.AngleAxis(-90.0f, Vector3.up) * m_RigidBody.velocity;
+                m_RigidBody.velocity = new Vector3(((m_RigidBody.velocity.x)/(m_RigidBody.velocity.magnitude)) * magnitude, ((m_RigidBody.velocity.y) / (m_RigidBody.velocity.magnitude)) * magnitude, ((m_RigidBody.velocity.z) / (m_RigidBody.velocity.magnitude)) * magnitude);
+            }
+
+
+
+
+            /*
 			if (Input.GetKeyDown (KeyCode.RightArrow)) {
 				m_RigidBody.velocity = Quaternion.AngleAxis(90.0f, Vector3.up) * m_RigidBody.velocity;
 				m_RigidBody.velocity = new Vector3(((m_RigidBody.velocity.x)/(m_RigidBody.velocity.magnitude)) * magnitude, ((m_RigidBody.velocity.y) / (m_RigidBody.velocity.magnitude)) * magnitude, ((m_RigidBody.velocity.z) / (m_RigidBody.velocity.magnitude)) * magnitude);
