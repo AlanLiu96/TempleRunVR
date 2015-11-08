@@ -6,7 +6,8 @@ public class PlayerController : MonoBehaviour {
     AndroidJavaObject jo;
     int command;
     private Rigidbody rb;
-    private float moveSpeed = 450.0f;
+    private float moveSpeed = 450.0f; // placeholder value
+    private float magnitude = 15.0f; // placeholder value
     void Start ()
     {
         jo = new AndroidJavaObject("com.example.alan.bluetoothreceive");
@@ -29,10 +30,12 @@ public class PlayerController : MonoBehaviour {
         else if (command == 2)
         {
             rb.velocity = Quaternion.AngleAxis(90.0f, Vector3.up) * rb.velocity;
+            rb.velocity = new Vector3(((rb.velocity.x)/(rb.velocity.magnitude)) * magnitude, ((rb.velocity.y) / (rb.velocity.magnitude)) * magnitude, ((rb.velocity.z) / (rb.velocity.magnitude)) * magnitude);
         }
         else if (command == 3)
         {
             rb.velocity = Quaternion.AngleAxis(-90.0f, Vector3.up) * rb.velocity;
+            rb.velocity = new Vector3(((rb.velocity.x)/(rb.velocity.magnitude)) * magnitude, ((rb.velocity.y) / (rb.velocity.magnitude)) * magnitude, ((rb.velocity.z) / (rb.velocity.magnitude)) * magnitude);
         }
     }
 
