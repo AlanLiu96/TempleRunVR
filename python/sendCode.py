@@ -1,17 +1,25 @@
 import bluetooth
+import sys
 
-target_name = "Alan's phone"
-target_address = None
+target_name = "SAMSUNG-SM-G920A"
+target_address = "E0:99:71:52:B2:71"
 
 nearby_devices = bluetooth.discover_devices()
 
-for bdaddr in nearby_devices:
-	print bdaddr
-    # if target_name == bluetooth.lookup_name( bdaddr ):
-        # target_address = bdaddr
-        # break
-
-if target_address is not None:
-    print "found target bluetooth device with address ", target_address
+if target_address not in nearby_devices:
+	print "could not find target bluetooth device nearby"
 else:
-    print "could not find target bluetooth device nearby"
+	print "connected!"
+port = 3
+
+sock=bluetooth.BluetoothSocket(bluetooth.RFCOMM)
+
+sock.connect((target_address,port))
+
+
+while True:
+	signal=sys.stdin.read(1)
+	dumpNewLine=sys.stdin.read(1)
+	sock.send(signal)
+
+sock.close()
