@@ -1,5 +1,6 @@
 import bluetooth
 import sys
+import os
 
 #1 = jmp
 #2 = left
@@ -28,11 +29,18 @@ print("connecting to \"%s\" on %s" % (name, host))
 sock=bluetooth.BluetoothSocket( bluetooth.RFCOMM )
 sock.connect((host, port))
 
+#get last modified time of tmp.txt
+oldTime = os.path.getmtime("temp.txt")
+
 while True:
-	signal=sys.stdin.read(1)
-	dumpNewLine=sys.stdin.read(1)
-	if dumpNewLine!= '\n':
-		break
+	newTime = os.path.getmtime("temp.txt")
+	if (newTime != oldTime):
+		#check the files
+		thisfile = open("temp.txt")
+		signal=thisfile.read()
+		oldTime = newTime;
+	else:
+		signal=0
 	sock.send(signal)
 
 sock.close()
