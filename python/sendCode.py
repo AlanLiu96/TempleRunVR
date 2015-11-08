@@ -31,7 +31,7 @@ sock.connect((host, port))
 
 #get last modified time of tmp.txt
 oldTime = os.path.getmtime("temp.txt")
-
+unchanged = 0
 while True:
 	newTime = os.path.getmtime("temp.txt")
 	if (newTime != oldTime):
@@ -39,8 +39,13 @@ while True:
 		thisfile = open("temp.txt")
 		signal=thisfile.read()
 		oldTime = newTime;
+		sock.send(signal)
+		print(signal)
 	else:
-		signal=0
-	sock.send(signal)
+		if unchanged == 0:
+			unchanged = 1
+			signal='0'
+			sock.send(signal)		
+			print(signal)
 
 sock.close()
