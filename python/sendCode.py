@@ -1,6 +1,10 @@
 import bluetooth
 import sys
 
+#1 = jmp
+#2 = left
+#3 = right
+
 target_name = "SAMSUNG-SM-G920A"
 target_address = "E0:99:71:52:B2:71" #Samsung
 # target_address = "C0:EE:FB:34:06:DB" # my OPO
