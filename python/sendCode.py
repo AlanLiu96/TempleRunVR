@@ -36,6 +36,7 @@ while True:
 	newTime = os.path.getmtime("temp.txt")
 	if (newTime != oldTime):
 		#check the files
+		unchanged = 0
 		thisfile = open("temp.txt")
 		signal=thisfile.read()
 		oldTime = newTime;
